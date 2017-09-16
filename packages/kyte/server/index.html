@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Kyte< :: Simple collaborative editing for developers</title>
+    <script src="https://unpkg.com/monaco-editor@0.10.0/min/vs/loader.js"></script> 
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+      }
+
+      #container {
+        height: 100%;
+        width: 100%;
+      }
+    </style>   
+  </head>
+  <body>
+    <div id="container"></div>
+    <script>
+    // This is required because many of the Monaco modules
+    // expect to load sub-modules from a "vs" root path.
+    require.config({ paths: { "vs": "https://unpkg.com/monaco-editor@0.10.0/min/vs" }});
+    require(["vs/editor/editor.main"], function () {
+        monaco.editor.create(document.getElementById("container"), {
+          language: "javascript",
+          theme: "vs-dark" // TODO: Enable changing theme
+        });
+
+        // Now that the editor has been fully initialized,
+        // let's lazilly load the client code that depends on it.
+        require(["client/out/index"], () => {});
+    });
+    </script>
+  </body>
+</html>
