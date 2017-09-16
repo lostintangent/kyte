@@ -2,6 +2,8 @@
 
 Kyte is a single-command Node.js CLI that allows easily sharing a local file with other developers, and then collaboratively editing it in real-time, directly from your browser (Google Docs style!).
 
+<img width="750"  src="https://user-images.githubusercontent.com/116461/30508388-dc197cf6-9a4a-11e7-8f8e-2f03a6cd632d.png" />
+
 ## Getting Started
 
 > Note: `Kyte` requires that you have Node.js v8.0.0+ installed, so if you're using an older version, you'll need to upgrade. I'd recommend using the awesome [`nvs`](github.com/jasongin/nvs) project for Node.js version management.
