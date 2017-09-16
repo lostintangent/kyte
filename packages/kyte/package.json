@@ -6,7 +6,8 @@
     "kyte": "bin/index.js"
   },
   "scripts": {
-    "build": "cd server/client && webpack"
+    "build": "cd server/client && webpack",
+    "prepublish": "cp ../../README.md ./README.md"
   },
   "author": "Jonathan Carter",
   "license": "MIT",
