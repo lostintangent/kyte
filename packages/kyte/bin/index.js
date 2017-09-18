@@ -1,4 +1,7 @@
 #! /usr/bin/env node
+
+const fs = require("fs");
+
 const { exit } = require("../lib/util");
 if (!process.version.startsWith("v8")) {
   exit("The Kyte CLI requires Node v8.0.0 or greater in order to run");
@@ -20,7 +23,15 @@ const { _: [filePath] } = yargs
   startServer(port);
 
   if (filePath) {
-    const fileContents = require("fs").readFileSync(filePath, "utf8");
+    if (!fs.existsSync(filePath)) {
+      exit("The specified file doesn't exist.");
+    }
+
+    if (fs.statSync(filePath).isDirectory()) {
+      exit("The specified path refers to a directory not a file.");
+    }
+
+    const fileContents = fs.readFileSync(filePath, "utf8");
 
     const WebSocket = require("ws");
     const socket = new WebSocket(`ws://localhost:${port}`);
