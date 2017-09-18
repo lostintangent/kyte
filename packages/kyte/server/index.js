@@ -5,7 +5,7 @@ const ShareDB = require("sharedb");
 const WebSocketServer = require("ws").Server;
 const WebSocketJsonStream = require("websocket-json-stream");
 
-module.exports = (port) => {
+module.exports = port => {
   const app = express();
   app.use(express.static(__dirname));
 
@@ -16,7 +16,7 @@ module.exports = (port) => {
   const shareDB = ShareDB();
 
   const webSocketServer = new WebSocketServer({ server });
-  webSocketServer.on("connection", (socket) => {
+  webSocketServer.on("connection", socket => {
     shareDB.listen(WebSocketJsonStream(socket));
   });
 };

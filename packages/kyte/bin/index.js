@@ -10,14 +10,17 @@ if (!process.version.startsWith("v8")) {
 const yargs = require("yargs");
 const { _: [filePath] } = yargs
   .usage("Usage: kyte [<filePath>] [options]")
-  .example("kyte", "Spin up a new co-editing session, using a blank file")
-  .example("kyte index.js", "Spin up a new co-editing session, using the contents of the local file 'index.js'")
-  .alias("h", "help").version()
-  .alias("v", "version")
+  .example("kyte", "Spin up a new co-editing session, using a new empty file")
+  .example(
+    "kyte index.js",
+    "Spin up a new co-editing session, using the contents of the local file 'index.js'"
+  )
   .help()
-  .argv;
+  .alias("h", "help")
+  .version()
+  .alias("v", "version").argv;
 
-!async function () {
+!(async function() {
   const startServer = require("../server");
   const port = await require("get-port")();
   startServer(port);
@@ -45,12 +48,16 @@ const { _: [filePath] } = yargs
     if (error) {
       return exit(error);
     }
-  
+
     const copy = require("util").promisify(require("copy-paste").copy);
     await copy(url);
 
-    console.log(`Co-editing session available at ${cyan(url)} (it's also copied to your clipboard!)`);
+    console.log(
+      `Co-editing session available at ${cyan(
+        url
+      )} (it's also copied to your clipboard!)`
+    );
     console.log(`Press ${cyan("<CTRL+C>")} to stop sharing this file`);
     opn(url);
   });
-}();
+})();
