@@ -37,6 +37,6 @@ npx kyte <filePath>
 
 Under the covers, `Kyte` spins up an `express`-based server on your local machine, with a [ShareDB](https://github.com/share/sharedb/) server on top of it in order to provide the concurrent editing (OT) back-end for the specified file.
 
-The web front-end uses the [Monaco](https://microsoft.github.io/monaco-editor) editor, and includes "bindings" to translate all of the editor actions into `ShareDB` operations, in order to keep all participanting developers in sync.
+The web front-end uses the [Monaco](https://microsoft.github.io/monaco-editor) editor, and includes "bindings" to translate all of the editor actions into `ShareDB` operations, in order to keep all participating developers in sync.
 
-In order to expose the server over the internet (and available to developers outside of your local subnet), it uses `ngrok` to create a public tunnel. This means that anyone with access to your share URL can access it, but the URL itself is "unguessable", and the tunnel will be immediately closed as soon as you terminatethe `kyte` CLI process.
+In order to expose the server over the internet (and available to developers outside of your local subnet), it uses `ngrok` to create a public tunnel. This means that anyone with access to your share URL can access it, but the URL itself is "unguessable", and the tunnel will be immediately closed as soon as you terminate the `kyte` CLI process.
