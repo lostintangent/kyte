@@ -1,7 +1,8 @@
 {
   "name": "kyte",
   "version": "0.1.1",
-  "description": "A single-command CLI for sharing and collaboratively editing a file",
+  "description":
+    "A single-command CLI for sharing and collaboratively editing a file",
   "repository": "https://github.com/lostintangent/kyte",
   "bin": {
     "kyte": "bin/index.js"

@@ -1,10 +1,8 @@
 {
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": ["packages/*"],
   "scripts": {
-    "format": "prettier --write '**/*.js{on}'",
+    "format": "prettier --write '**/*.js{on,}'",
     "postinstall": "cd packages/kyte; yarn unlink; yarn link",
     "precommit": "lint-staged"
   },
@@ -18,9 +16,6 @@
     "webpack": "3.3.0"
   },
   "lint-staged": {
-    "*.js": [
-      "prettier --write",
-      "git add"
-    ]
+    "*.js": ["prettier --write", "git add"]
   }
 }
