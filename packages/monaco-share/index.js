@@ -30,40 +30,61 @@ module.exports = (
 
     // Begin listening for local edits, so that they
     // can be sent to the server for other participants.
-    changeDisposable = monacoModel.onDidChangeContent(({ changes }) => {
-      if (editsInProgress) {
-        return;
-      }
+    changeDisposable = monacoModel.onDidChangeContent(contentChangeListener);
+  });
 
-      const operation = [];
-      changes.forEach(({ range, rangeLength, text }) => {
-        const offset = monacoModel.getOffsetAt(range.getStartPosition());
-        if (offset > 0) {
-          operation.push(offset);
+  function contentChangeListener({ changes }) {
+    console.log(changes);
+
+    if (editsInProgress) {
+      return;
+    }
+
+    const operation = [];
+    let textCursor = 0;
+    changes
+      .map(({ range, rangeLength, text }) => {
+        return {
+          offset: monacoModel.getOffsetAt(range.getStartPosition()),
+          rangeLength,
+          text
+        };
+      })
+      .sort((a, b) => {
+        if (a.offset > b.offset) {
+          return 1;
+        } else if (a.offset < b.offset) {
+          return -1;
+        } else {
+          return 0;
+        }
+      })
+      .forEach(({ offset, rangeLength, text }) => {
+        const adjustedOffset = offset - textCursor;
+        textCursor += adjustedOffset;
+
+        if (adjustedOffset > 0) {
+          operation.push(adjustedOffset);
         }
 
         if (rangeLength > 0 && !text) {
           operation.push({ d: rangeLength });
-        }
-
-        if (text) {
+        } else if (text) {
           operation.push(text);
         }
       });
 
-      const operationRecord = [{ p: [documentPath], t: "text", o: operation }];
-      enableLogging && log("Submitting document operation", operationRecord);
-      shareDbDocument.submitOp(operationRecord);
-    });
-  });
+    enableLogging && log("Submitting document operation", operation);
+    shareDbDocument.submitOp([{ p: [documentPath], t: "text", o: operation }]);
+  }
 
   function serverOperationListener(operations, isLocalOperation) {
     if (isLocalOperation) {
       return;
     }
 
+    const editOperations = [];
     operations.forEach(operation => {
-      // Ensure that the incoming operation is for the expected document path
       if (
         operation.p &&
         operation.p.length === 1 &&
@@ -83,18 +104,21 @@ module.exports = (
               break;
 
             case "string":
-              const position = monacoModel.getPositionAt(textIndex);
+              const { column, lineNumber } = monacoModel.getPositionAt(
+                textIndex
+              );
               monacoModel.applyEdits([
                 {
                   range: new monaco.Range(
-                    position.lineNumber,
-                    position.column,
-                    position.lineNumber,
-                    position.column
+                    lineNumber,
+                    column,
+                    lineNumber,
+                    column
                   ),
                   text: part
                 }
               ]);
+
               textIndex += part.length;
               break;
 

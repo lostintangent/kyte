@@ -1,7 +1,5 @@
 #! /usr/bin/env node
 
-const fs = require("fs");
-
 const { exit } = require("../lib/util");
 if (!process.version.startsWith("v8")) {
   exit("The Kyte CLI requires Node v8.0.0 or greater in order to run");
@@ -21,8 +19,10 @@ const { _: [filePath] } = yargs
   .alias("v", "version").argv;
 
 !(async function() {
-  const startServer = require("../server");
+  const fs = require("fs");
   const port = await require("get-port")();
+  const startServer = require("../server");
+
   startServer(port);
 
   if (filePath) {
