@@ -1,6 +1,7 @@
 #! /usr/bin/env node
 
 const { exit } = require("../lib/util");
+const { promisify } = require("util");
 
 if (!process.version.startsWith("v8")) {
   exit("The Kyte CLI requires Node v8.0.0 or greater in order to run");
@@ -25,18 +26,21 @@ const { _: [filePath] } = yargs
     const { localUrl, tunnelUrl } = await startSession(filePath);
 
     if (process.stdout.isTTY) {
+      const copyToClipboard = promisify(require("copy-paste").copy);
+      await copyToClipboard(tunnelUrl);
+
       const boxen = require("boxen");
       const { cyan, gray, green } = require("chalk");
 
-      const message = `${green("New collaborative sesion started!")}
-    
-${cyan("Local URL:")}  ${localUrl}
-${cyan("Tunnel URL:")} ${tunnelUrl}
-
-${gray("Tunnel URL has been copied to your clipboard")}`;
+      const successMessage = [
+        green("New collaborative sesion started!\n"),
+        `${cyan("Local URL:")}  ${localUrl}`,
+        `${cyan("Tunnel URL:")} ${tunnelUrl}\n`,
+        gray("Tunnel URL has been copied to your clipboard")
+      ];
 
       console.log(
-        boxen(message, {
+        boxen(successMessage.join("\n"), {
           padding: 1,
           margin: { bottom: 1, top: 1 }
         })

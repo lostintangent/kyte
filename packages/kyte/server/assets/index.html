@@ -26,7 +26,7 @@
     // This is required because many of the Monaco modules
     // expect to load sub-modules from a "vs" root path.
     require.config({ paths: { "vs": "https://unpkg.com/monaco-editor@0.10.0/min/vs" } });
-    require(["vs/editor/editor.main"], function () {
+    require(["vs/editor/editor.main"], () => {
       monaco.editor.create(document.getElementById("container"), {
         language: "json",
         theme: "vs-dark" // TODO: Enable changing theme
@@ -34,7 +34,7 @@
 
       // Now that the editor has been fully initialized,
       // let's lazilly load the client code that depends on it.
-      require(["client/out/index"], () => { });
+      require(["index"], () => { });
     });
   </script>
 </body>

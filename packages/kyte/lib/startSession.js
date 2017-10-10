@@ -2,8 +2,6 @@ const fs = require("fs");
 const { promisify } = require("util");
 
 module.exports = async function(filePath) {
-  let fileContents = "";
-
   // If a file was specified, ensure that it
   // is valid before attempting to start the server.
   if (filePath) {
@@ -16,29 +14,31 @@ module.exports = async function(filePath) {
         `The specified path refers to a directory not a file: ${filePath}`
       );
     }
-
-    fileContents = fs.readFileSync(filePath, "utf8");
   }
 
+  // Spin up the OT server + web front-end,
+  // using a locally available port.
   const port = await require("get-port")();
   const startServer = require("../server");
   startServer(port);
 
-  const WebSocket = require("ws");
-  const socket = new WebSocket(`ws://localhost:${port}`);
-  await require("./shareClient")(socket, fileContents);
+  // If a file was specified, then we need to connect
+  // to the newly started server and initialize the
+  // shared document with the local contents.
+  if (filePath) {
+    const WebSocket = require("ws");
+    const socket = new WebSocket(`ws://localhost:${port}`);
 
-  const copyPaste = require("copy-paste");
-  const ngrok = require("ngrok");
+    const fileContents = fs.readFileSync(filePath, "utf8");
+    await require("./shareClient")(socket, fileContents);
 
-  const copyToClipboard = promisify(copyPaste.copy);
-  const createTunnel = promisify(ngrok.connect);
+    socket.close();
+  }
 
-  const tunnelUrl = await createTunnel(port);
-  await copyToClipboard(tunnelUrl);
+  const createTunnel = promisify(require("ngrok").connect);
 
   return {
     localUrl: `http://localhost:${port}`,
-    tunnelUrl
+    tunnelUrl: await createTunnel(port)
   };
 };

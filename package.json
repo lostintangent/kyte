@@ -4,7 +4,7 @@
   "scripts": {
     "build": "cd packages/kyte && npm run build",
     "format": "prettier --write '**/*.js{on,}'",
-    "postinstall": "cd packages/kyte; yarn unlink; yarn link",
+    "postinstall": "npm run build && cd packages/kyte; yarn unlink; yarn link",
     "precommit": "lint-staged"
   },
   "devDependencies": {

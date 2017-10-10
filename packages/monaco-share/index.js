@@ -13,15 +13,11 @@ module.exports = (
   let changeDisposable,
     editsInProgress = false;
 
-  // 1) Subscribe to the provided document, and update
-  // the Monaco model with the current server state.
   shareDbDocument.subscribe(() => {
     if (!shareDbDocument.type) {
-      enableLogging && log("Creating document");
       shareDbDocument.create({ [documentPath]: "" });
     }
 
-    enableLogging && log("Client subscribed");
     monacoModel.setValue(shareDbDocument.data[documentPath]);
 
     // Begin listening for incoming operations from the
@@ -34,14 +30,13 @@ module.exports = (
   });
 
   function contentChangeListener({ changes }) {
-    console.log(changes);
-
     if (editsInProgress) {
       return;
     }
 
     const operation = [];
     let textCursor = 0;
+
     changes
       .map(({ range, rangeLength, text }) => {
         return {
