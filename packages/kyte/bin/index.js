@@ -1,6 +1,7 @@
 #! /usr/bin/env node
 
 const { exit } = require("../lib/util");
+
 if (!process.version.startsWith("v8")) {
   exit("The Kyte CLI requires Node v8.0.0 or greater in order to run");
 }
@@ -19,45 +20,33 @@ const { _: [filePath] } = yargs
   .alias("v", "version").argv;
 
 !(async function() {
-  const fs = require("fs");
-  const port = await require("get-port")();
-  const startServer = require("../server");
+  try {
+    const startSession = require("../lib/startSession");
+    const { localUrl, tunnelUrl } = await startSession(filePath);
 
-  startServer(port);
+    if (process.stdout.isTTY) {
+      const boxen = require("boxen");
+      const { cyan, gray, green } = require("chalk");
 
-  if (filePath) {
-    if (!fs.existsSync(filePath)) {
-      exit("The specified file doesn't exist.");
+      const message = `${green("New collaborative sesion started!")}
+    
+${cyan("Local URL:")}  ${localUrl}
+${cyan("Tunnel URL:")} ${tunnelUrl}
+
+${gray("Tunnel URL has been copied to your clipboard")}`;
+
+      console.log(
+        boxen(message, {
+          padding: 1,
+          margin: { bottom: 1, top: 1 }
+        })
+      );
+
+      require("opn")(tunnelUrl);
+    } else {
+      console.log(tunnelUrl);
     }
-
-    if (fs.statSync(filePath).isDirectory()) {
-      exit("The specified path refers to a directory not a file.");
-    }
-
-    const fileContents = fs.readFileSync(filePath, "utf8");
-
-    const WebSocket = require("ws");
-    const socket = new WebSocket(`ws://localhost:${port}`);
-    await require("../lib/shareClient")(socket, fileContents);
+  } catch ({ message }) {
+    exit(message);
   }
-
-  const opn = require("opn");
-  const { connect } = require("ngrok");
-  const { cyan } = require("chalk");
-  connect(port, async (error, url) => {
-    if (error) {
-      return exit(error);
-    }
-
-    const copy = require("util").promisify(require("copy-paste").copy);
-    await copy(url);
-
-    console.log(
-      `Co-editing session available at ${cyan(
-        url
-      )} (it's also copied to your clipboard!)`
-    );
-    console.log(`Press ${cyan("<CTRL+C>")} to stop sharing this file`);
-    opn(url);
-  });
 })();

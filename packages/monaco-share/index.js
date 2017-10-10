@@ -61,15 +61,16 @@ module.exports = (
       })
       .forEach(({ offset, rangeLength, text }) => {
         const adjustedOffset = offset - textCursor;
-        textCursor += adjustedOffset;
-
         if (adjustedOffset > 0) {
           operation.push(adjustedOffset);
+          textCursor += adjustedOffset;
         }
 
-        if (rangeLength > 0 && !text) {
+        if (rangeLength > 0) {
           operation.push({ d: rangeLength });
-        } else if (text) {
+        }
+
+        if (text) {
           operation.push(text);
         }
       });
@@ -135,6 +136,7 @@ module.exports = (
                   )
                 }
               ]);
+              //textIndex -= part.d;
               break;
           }
         });
