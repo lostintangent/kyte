@@ -3,6 +3,7 @@
   "workspaces": ["packages/*"],
   "scripts": {
     "build": "cd packages/kyte && npm run build",
+    "commit": "git-cz",
     "format": "prettier --write '**/*.js{on,}'",
     "postinstall": "npm run build && cd packages/kyte; yarn unlink; yarn link",
     "precommit": "lint-staged"
@@ -11,6 +12,8 @@
     "babel-core": "^6.25.0",
     "babel-loader": "^7.1.1",
     "babel-preset-env": "^1.6.0",
+    "commitizen": "^2.9.6",
+    "cz-conventional-changelog": "^2.0.0",
     "husky": "^0.14.3",
     "lint-staged": "^4.2.1",
     "prettier": "^1.7.0",
@@ -18,5 +21,10 @@
   },
   "lint-staged": {
     "*.js": ["prettier --write", "git add"]
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
   }
 }

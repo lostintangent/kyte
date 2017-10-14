@@ -1,5 +1,7 @@
 # Kyte
 
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+
 Kyte is a single-command Node.js CLI that allows easily sharing a local file with other developers, and then collaboratively editing it in real-time, directly from your browser (Google Docs style!).
 
 <img width="750"  src="https://user-images.githubusercontent.com/116461/30508388-dc197cf6-9a4a-11e7-8f8e-2f03a6cd632d.png" />
