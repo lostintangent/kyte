@@ -1,15 +1,14 @@
 {
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": ["packages/*"],
   "scripts": {
     "build": "cd packages/kyte && npm run build",
     "commit": "git-cz",
     "format": "prettier --write '**/*.js{on,}'",
     "postinstall": "npm run build && cd packages/kyte; yarn unlink; yarn link",
     "precommit": "lint-staged",
-    "release": "lerna publish --conventional-commits"
+    "release":
+      "lerna publish --conventional-commits -m 'chore(release): publish %s'"
   },
   "devDependencies": {
     "babel-core": "^6.25.0",
@@ -24,10 +23,7 @@
     "webpack": "^3.7.1"
   },
   "lint-staged": {
-    "*.js": [
-      "prettier --write",
-      "git add"
-    ]
+    "*.js": ["prettier --write", "git add"]
   },
   "config": {
     "commitizen": {
