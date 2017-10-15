@@ -10,3 +10,11 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 **Note:** Version bump only for package monaco-share
+
+<a name="0.2.1"></a>
+## 0.2.1 (2017-10-15)
+
+
+
+
+**Note:** Version bump only for package monaco-share

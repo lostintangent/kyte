@@ -1,13 +1,17 @@
 {
   "name": "kyte",
-  "version": "0.2.0",
-  "description":
-    "A single-command CLI for sharing and collaboratively editing a file",
+  "version": "0.2.1",
+  "description": "A single-command CLI for sharing and collaboratively editing a file",
   "repository": "https://github.com/lostintangent/kyte",
   "bin": {
     "kyte": "bin/index.js"
   },
-  "files": ["bin/", "lib/", "server/index.js", "server/assets/"],
+  "files": [
+    "bin/",
+    "lib/",
+    "server/index.js",
+    "server/assets/"
+  ],
   "scripts": {
     "build": "webpack",
     "postpublish": "rm ./README.md",
