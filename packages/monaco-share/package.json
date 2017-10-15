@@ -1,12 +1,9 @@
 {
   "name": "monaco-share",
-  "version": "0.2.1",
+  "version": "0.2.0",
   "description": "Monaco editor binding for ShareDB",
   "main": "index.js",
-  "keywords": [
-    "monaco",
-    "sharedb"
-  ],
+  "keywords": ["monaco", "sharedb"],
   "author": "Jonathan Carter",
   "license": "MIT"
 }
