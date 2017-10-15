@@ -3,7 +3,7 @@
   "workspaces": ["packages/*"],
   "scripts": {
     "build": "cd packages/kyte && npm run build",
-    "commit": "git-cz",
+    "cz": "git-cz",
     "format": "prettier --write '**/*.js{on,}'",
     "precommit": "lint-staged",
     "release":

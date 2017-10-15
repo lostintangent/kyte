@@ -6,7 +6,7 @@ if (!process.version.startsWith("v8")) {
 
 const yargs = require("yargs");
 const { _: [filePath] } = yargs
-  .usage("Usage: kyte [<filePath>] [options]")
+  .usage("kyte [filePath] [options]")
   .example("kyte", "Spin up a new co-editing session, using a new empty file")
   .example(
     "kyte index.js",
@@ -14,10 +14,8 @@ const { _: [filePath] } = yargs
   )
   .fail(exit)
   .strict()
-  .help()
-  .alias("h", "help")
-  .version()
-  .alias("v", "version").argv;
+  .alias({ h: "help", v: "version" })
+  .parse();
 
 require("../lib/cli")(filePath).catch(exit);
 
