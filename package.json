@@ -5,7 +5,6 @@
     "build": "cd packages/kyte && npm run build",
     "commit": "git-cz",
     "format": "prettier --write '**/*.js{on,}'",
-    "postinstall": "npm run build && cd packages/kyte; yarn unlink; yarn link",
     "precommit": "lint-staged",
     "release":
       "lerna publish --conventional-commits -m 'chore(release): publish %s'"
