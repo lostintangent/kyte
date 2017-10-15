@@ -1,15 +1,16 @@
 {
   "name": "kyte",
   "version": "0.2.2",
-  "description": "A single-command CLI for sharing and collaboratively editing a file",
+  "description":
+    "A single-command CLI for sharing and collaboratively editing a file",
   "repository": "https://github.com/lostintangent/kyte",
   "bin": {
     "kyte": "bin/index.js"
   },
   "scripts": {
     "build": "webpack",
-    "prepublish": "npm run build && cp ../../README.md ./README.md",
-    "postpublish": "rm ./README.md"
+    "postpublish": "rm ./README.md",
+    "prepublishOnly": "cp ../../README.md ./README.md"
   },
   "author": "Jonathan Carter",
   "license": "MIT",
@@ -27,7 +28,7 @@
     "sharedb": "^1.0.0-beta.7",
     "websocket-json-stream": "^0.0.3",
     "ws": "^3.2.0",
-    "yargs": "^9.0.1"
+    "yargs": "^10.0.0-alpha.1"
   },
   "engines": {
     "node": ">=8.0.0"

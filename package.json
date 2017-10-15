@@ -3,6 +3,7 @@
   "workspaces": ["packages/*"],
   "scripts": {
     "build": "lerna run build",
+    "clean": "lerna clean",
     "cz": "git-cz",
     "format": "prettier --write '**/*.js{on,}'",
     "precommit": "lint-staged",
@@ -21,12 +22,12 @@
     "prettier": "^1.7.0",
     "webpack": "^3.7.1"
   },
-  "lint-staged": {
-    "*.js": ["prettier --write", "git add"]
-  },
   "config": {
     "commitizen": {
       "path": "cz-conventional-changelog"
     }
+  },
+  "lint-staged": {
+    "*.js": ["prettier --write", "git add"]
   }
 }
