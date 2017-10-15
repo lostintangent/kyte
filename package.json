@@ -2,7 +2,7 @@
   "private": true,
   "workspaces": ["packages/*"],
   "scripts": {
-    "build": "cd packages/kyte && npm run build",
+    "build": "lerna run build",
     "cz": "git-cz",
     "format": "prettier --write '**/*.js{on,}'",
     "precommit": "lint-staged",
