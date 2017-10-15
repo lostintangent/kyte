@@ -1,7 +1,8 @@
 {
   "name": "kyte",
-  "version": "0.1.1",
-  "description": "A single-command CLI for sharing and collaboratively editing a file",
+  "version": "0.2.0",
+  "description":
+    "A single-command CLI for sharing and collaboratively editing a file",
   "repository": "https://github.com/lostintangent/kyte",
   "bin": {
     "kyte": "bin/index.js"
@@ -19,7 +20,7 @@
     "copy-paste": "^1.3.0",
     "express": "^4.15.4",
     "get-port": "^3.2.0",
-    "monaco-share": "0.1.0",
+    "monaco-share": "0.2.0",
     "ngrok": "^2.2.22",
     "node-version": "^1.1.0",
     "opn": "^5.1.0",
