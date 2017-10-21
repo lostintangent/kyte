@@ -1,6 +1,6 @@
 {
   "name": "kyte",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description":
     "A single-command CLI for sharing and collaboratively editing a file",
   "repository": "https://github.com/lostintangent/kyte",
