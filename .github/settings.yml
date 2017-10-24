@@ -1,3 +1,4 @@
 repository:
   name: kyte
-  description: A single-command CLI for sharing and collaboratively editing an arbitrary file in real-time
+  description: A single-command CLI for sharing and collaboratively editing a file in real-time
+  topics: cli, collaboration, collaborative-editing, developer-tools, nodejs
