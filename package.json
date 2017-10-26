@@ -4,12 +4,16 @@
   "scripts": {
     "build": "lerna run build",
     "clean": "lerna clean",
+    "commitmsg": "commitlint -e $GIT_PARAMS",
     "cz": "git-cz",
     "format": "prettier --write '**/*.js{on,}'",
     "precommit": "lint-staged",
-    "release": "lerna publish -m 'chore(release): Publishing release(s)'"
+    "release":
+      "npm run build && lerna publish -m 'chore(release): Publishing release(s)'"
   },
   "devDependencies": {
+    "@commitlint/cli": "^4.2.2",
+    "@commitlint/config-angular": "^4.2.1",
     "babel-core": "^6.25.0",
     "babel-loader": "^7.1.1",
     "babel-preset-env": "^1.6.1",
@@ -20,6 +24,9 @@
     "lint-staged": "^4.3.0",
     "prettier": "^1.7.0",
     "webpack": "^3.8.1"
+  },
+  "commitlint": {
+    "extends": ["@commitlint/config-angular"]
   },
   "config": {
     "commitizen": {
