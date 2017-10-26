@@ -5,7 +5,7 @@
     "build": "lerna run build",
     "clean": "lerna clean",
     "commitmsg": "commitlint -e $GIT_PARAMS",
-    "cz": "git-cz",
+    "cz": "commit",
     "format": "prettier --write '**/*.js{on,}'",
     "precommit": "lint-staged",
     "release":
@@ -14,6 +14,7 @@
   "devDependencies": {
     "@commitlint/cli": "^4.2.2",
     "@commitlint/config-angular": "^4.2.1",
+    "@commitlint/prompt-cli": "^4.2.2",
     "babel-core": "^6.25.0",
     "babel-loader": "^7.1.1",
     "babel-preset-env": "^1.6.1",
