@@ -4,6 +4,7 @@
 [![Greenkeeper badge](https://badges.greenkeeper.io/lostintangent/kyte.svg)](https://greenkeeper.io/)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 [![Maintainability](https://api.codeclimate.com/v1/badges/84be0e61815a8fbd3aef/maintainability)](https://codeclimate.com/github/lostintangent/kyte/maintainability)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
 Kyte is a single-command Node.js CLI that allows easily sharing a local file with other developers, and then collaboratively editing it in real-time, directly from your browser (Google Docs style!).
 
