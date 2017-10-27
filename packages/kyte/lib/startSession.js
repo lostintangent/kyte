@@ -1,44 +1,52 @@
 const fs = require("fs");
+const WebSocket = require("ws");
 const { promisify } = require("util");
+
+const createTunnel = promisify(require("ngrok").connect);
+
+function assertFilePath(filePath) {
+  if (!fs.existsSync(filePath)) {
+    throw new Error(`The specified file doesn't exist: ${filePath}`);
+  }
+
+  if (fs.statSync(filePath).isDirectory()) {
+    throw new Error(
+      `The specified path refers to a directory not a file: ${filePath}`
+    );
+  }
+}
+
+async function populateFileContents(serverUrl, filePath) {
+  const socket = new WebSocket(serverUrl);
+
+  const fileContents = fs.readFileSync(filePath, "utf8");
+  await require("./shareClient")(socket, fileContents);
+
+  socket.close();
+}
 
 module.exports = async function(filePath) {
   // If a file was specified, ensure that it
   // is valid before attempting to start the server.
-  if (filePath) {
-    if (!fs.existsSync(filePath)) {
-      throw new Error(`The specified file doesn't exist: ${filePath}`);
-    }
-
-    if (fs.statSync(filePath).isDirectory()) {
-      throw new Error(
-        `The specified path refers to a directory not a file: ${filePath}`
-      );
-    }
-  }
+  filePath && assertFilePath(filePath);
 
   // Spin up the OT server + web front-end,
   // using a locally available port.
   const port = await require("get-port")();
   const startServer = require("../server");
-  startServer(port);
+  const { url, wsUrl } = startServer(port);
 
   // If a file was specified, then we need to connect
   // to the newly started server and initialize the
   // shared document with the local contents.
-  if (filePath) {
-    const WebSocket = require("ws");
-    const socket = new WebSocket(`ws://localhost:${port}`);
+  filePath && populateFileContents(wsUrl, filePath);
 
-    const fileContents = fs.readFileSync(filePath, "utf8");
-    await require("./shareClient")(socket, fileContents);
-
-    socket.close();
-  }
-
-  const createTunnel = promisify(require("ngrok").connect);
+  // Spin up the internet tunnel, so that the co-editing
+  // session can be accessible to any other developers.
+  const tunnelUrl = await createTunnel(port);
 
   return {
-    localUrl: `http://localhost:${port}`,
-    tunnelUrl: await createTunnel(port)
+    localUrl: url,
+    tunnelUrl
   };
 };

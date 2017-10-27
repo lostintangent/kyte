@@ -19,4 +19,9 @@ module.exports = port => {
   webSocketServer.on("connection", socket => {
     shareDB.listen(WebSocketJsonStream(socket));
   });
+
+  return {
+    url: `http://localhost:${port}`,
+    wsUrl: `ws://localhost:${port}`
+  };
 };
