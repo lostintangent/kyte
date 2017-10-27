@@ -11,6 +11,12 @@
     "release":
       "npm run build && lerna publish -m 'chore(release): Publishing release(s)'"
   },
+  "commitlint": {
+    "extends": ["@commitlint/config-angular"]
+  },
+  "lint-staged": {
+    "*.js{on,}": ["prettier --write", "git add"]
+  },
   "devDependencies": {
     "@commitlint/cli": "^4.2.2",
     "@commitlint/config-angular": "^4.2.1",
@@ -23,16 +29,5 @@
     "lint-staged": "^4.3.0",
     "prettier": "^1.7.0",
     "webpack": "^3.8.1"
-  },
-  "commitlint": {
-    "extends": ["@commitlint/config-angular"]
-  },
-  "config": {
-    "commitizen": {
-      "path": "cz-conventional-changelog"
-    }
-  },
-  "lint-staged": {
-    "*.js{on,}": ["prettier --write", "git add"]
   }
 }
