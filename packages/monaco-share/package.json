@@ -3,10 +3,10 @@
   "version": "0.2.1",
   "description": "Monaco editor binding for ShareDB",
   "main": "index.js",
-  "keywords": [
-    "monaco",
-    "sharedb"
-  ],
+  "keywords": ["monaco", "sharedb"],
   "author": "Jonathan Carter",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "debug": "^3.1.0"
+  }
 }

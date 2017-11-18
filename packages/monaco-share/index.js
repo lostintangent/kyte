@@ -1,24 +1,19 @@
-function log(message, ...args) {
-  console.log(`[monaco-share]: ${message}`, ...args);
-}
+const debug = require("debug")("monaco-share");
 
 module.exports = (
   shareDbDocument,
-  {
-    monacoModel = window.monaco.editor.getModels()[0],
-    documentPath = "content",
-    enableLogging = true
-  } = {}
+  contentPath = "content",
+  monacoModel = window.monaco.editor.getModels()[0]
 ) => {
   let changeDisposable,
     editsInProgress = false;
 
   shareDbDocument.subscribe(() => {
     if (!shareDbDocument.type) {
-      shareDbDocument.create({ [documentPath]: "" });
+      shareDbDocument.create({ [contentPath]: "" });
     }
 
-    monacoModel.setValue(shareDbDocument.data[documentPath]);
+    monacoModel.setValue(shareDbDocument.data[contentPath]);
 
     // Begin listening for incoming operations from the
     // server so that we can apply them to the local editor.
@@ -34,14 +29,27 @@ module.exports = (
       return;
     }
 
-    const operation = [];
-    let textCursor = 0;
+    // Insert (simply insert, normal auto-closing char)
+    // Delete (simple delete, normal undo)
+    // Replace (Manual highselect/replace, or find/replace with a single match)
+    // Replace, Replace, ... (Find replace) (NOT WORKING)
+    // Insert, Delete (New line + removing previous smart indent)
+    // Delete, Insert (Remove previous smart indent + insert newline)
+    // Insert, Insert (auto-closing characters such as braces or quotes, when selecting a symbol)
+    // Delete, Delete (undoing an auto-closing character that wraps a symbol)
 
-    changes
+    // TODO: Comment/uncomment block? Multi-cursor? Formatting (tons of inserts)?
+
+    debug("Received local changes: %o", changes);
+
+    let textCursor = 0;
+    const operation = [];
+    changes = changes
       .map(({ range, rangeLength, text }) => {
         return {
           offset: monacoModel.getOffsetAt(range.getStartPosition()),
           rangeLength,
+          range,
           text
         };
       })
@@ -53,96 +61,87 @@ module.exports = (
         } else {
           return 0;
         }
-      })
-      .forEach(({ offset, rangeLength, text }) => {
-        const adjustedOffset = offset - textCursor;
-        if (adjustedOffset > 0) {
-          operation.push(adjustedOffset);
-          textCursor += adjustedOffset;
-        }
-
-        if (rangeLength > 0) {
-          operation.push({ d: rangeLength });
-        }
-
-        if (text) {
-          operation.push(text);
-        }
       });
 
-    enableLogging && log("Submitting document operation", operation);
-    shareDbDocument.submitOp([{ p: [documentPath], t: "text", o: operation }]);
+    if (changes.length === 2) {
+      // Inserting a newline (plus smart indent), when
+      // there is a subsequent line that has uncommitted "smart indentation"
+      if (
+        changes[0].text &&
+        changes[1].rangeLength > 0 &&
+        changes[0].text.startsWith("\n")
+      ) {
+        // Since a new line has been inserted, we need to shift
+        // the second operation down a line
+        changes[1].range.startLineNumber += 1;
+        changes[1].offset = monacoModel.getOffsetAt(
+          changes[1].range.getStartPosition()
+        );
+      }
+    }
+
+    let previousOperationCharacterImpact = 0;
+    changes.forEach(({ offset, rangeLength, text }) => {
+      let adjustedOffset = offset - textCursor;
+
+      // Undoing an auto-closed character (quote, parens, bracket, brace) that was wrapped
+      // around another string/symbol
+      // Also includes find/replace
+      if (rangeLength > 0) {
+        adjustedOffset -= previousOperationCharacterImpact;
+      }
+
+      if (adjustedOffset > 0) {
+        operation.push(adjustedOffset);
+        textCursor += adjustedOffset;
+      }
+
+      if (rangeLength > 0) {
+        operation.push({
+          d: rangeLength
+        });
+
+        previousOperationCharacterImpact = rangeLength;
+      }
+
+      if (text) {
+        operation.push(text);
+
+        previousOperationCharacterImpact = text.length;
+      }
+    });
+
+    debug("Submitting document operation: %o", operation);
+    shareDbDocument.submitOp([{ p: [contentPath], t: "text", o: operation }]);
   }
 
+  const applyRemoteOperation = require("./remoteOperationHandler")(monacoModel);
   function serverOperationListener(operations, isLocalOperation) {
     if (isLocalOperation) {
       return;
     }
 
-    const editOperations = [];
-    operations.forEach(operation => {
-      if (
-        operation.p &&
-        operation.p.length === 1 &&
-        operation.p[0] === documentPath &&
-        operation.t === "text"
-      ) {
-        if (!Array.isArray(operation.o)) {
-          throw new Error("Unexpected non-Array op for text document");
-        }
+    editsInProgress = true;
 
-        editsInProgress = true;
-        let textIndex = 0;
-        operation.o.forEach(part => {
-          switch (typeof part) {
-            case "number":
-              textIndex += part;
-              break;
+    operations.forEach(applyRemoteOperation);
+    validateLocalState();
 
-            case "string":
-              const { column, lineNumber } = monacoModel.getPositionAt(
-                textIndex
-              );
-              monacoModel.applyEdits([
-                {
-                  range: new monaco.Range(
-                    lineNumber,
-                    column,
-                    lineNumber,
-                    column
-                  ),
-                  text: part
-                }
-              ]);
+    editsInProgress = false;
+  }
 
-              textIndex += part.length;
-              break;
+  function validateLocalState() {
+    const localText = monacoModel.getValue();
+    const remoteText = shareDbDocument.data[contentPath];
 
-            case "object":
-              const startPosition = monacoModel.getPositionAt(textIndex);
-              const endPosition = monacoModel.getPositionAt(textIndex + part.d);
-              monacoModel.applyEdits([
-                {
-                  range: new monaco.Range(
-                    startPosition.lineNumber,
-                    startPosition.column,
-                    endPosition.lineNumber,
-                    endPosition.column
-                  )
-                }
-              ]);
-              //textIndex -= part.d;
-              break;
-          }
-        });
-        editsInProgress = false;
-      }
-    });
+    if (localText !== remoteText) {
+      debug("Local state out of sync, resetting to server snapshot");
+      monacoModel.setValue(remoteText);
+    }
   }
 
   return () => {
-    // Stop listening to input from the server
-    // as well as changes coming from the editor model.
+    // Stop listening to input from the server, as well
+    // as changes coming from the provided editor model.
     changeDisposable && changeDisposable.dispose();
     shareDbDocument.removeListener("op", serverOperationListener);
   };

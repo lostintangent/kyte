@@ -2,7 +2,7 @@ const fs = require("fs");
 const WebSocket = require("ws");
 const { promisify } = require("util");
 
-const createTunnel = promisify(require("ngrok").connect);
+const connectTunnel = promisify(require("ngrok").connect);
 
 function assertFilePath(filePath) {
   if (!fs.existsSync(filePath)) {
@@ -25,28 +25,31 @@ async function populateFileContents(serverUrl, filePath) {
   socket.close();
 }
 
-module.exports = async function(filePath) {
+module.exports = async function(filePath, createTunnel) {
   // If a file was specified, ensure that it
   // is valid before attempting to start the server.
   filePath && assertFilePath(filePath);
 
   // Spin up the OT server + web front-end,
   // using a locally available port.
-  const port = await require("get-port")();
+  const port = await require("get-port")({ port: 8558 });
   const startServer = require("../server");
-  const { url, wsUrl } = startServer(port);
+  const { url: localUrl, wsUrl } = startServer(port);
 
   // If a file was specified, then we need to connect
   // to the newly started server and initialize the
   // shared document with the local contents.
-  filePath && populateFileContents(wsUrl, filePath);
+  filePath && (await populateFileContents(wsUrl, filePath));
 
   // Spin up the internet tunnel, so that the co-editing
   // session can be accessible to any other developers.
-  const tunnelUrl = await createTunnel(port);
+  let tunnelUrl;
+  if (createTunnel) {
+    tunnelUrl = await connectTunnel(port);
+  }
 
   return {
-    localUrl: url,
+    localUrl,
     tunnelUrl
   };
 };
