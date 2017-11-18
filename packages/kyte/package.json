@@ -23,13 +23,14 @@
     "get-port": "^3.2.0",
     "monaco-share": "^0.2.1",
     "ngrok": "^2.2.22",
+    "node-emoji": "^1.8.1",
     "node-version": "^1.1.0",
     "opn": "^5.1.0",
     "ot-text": "^1.0.1",
     "sharedb": "^1.0.0-beta.7",
     "websocket-json-stream": "^0.0.3",
     "ws": "^3.2.0",
-    "yargs": "^10.0.0-alpha.3"
+    "yargs": "^10.0.3"
   },
   "engines": {
     "node": ">=8.0.0"

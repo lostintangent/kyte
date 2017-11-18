@@ -1,24 +1,27 @@
 const boxen = require("boxen");
+const emoji = require("node-emoji");
 const opn = require("opn");
 const startSession = require("./startSession");
 const { copy } = require("copy-paste");
-const { cyan, gray, green, red } = require("chalk");
+const { cyan, gray, green, magenta, red } = require("chalk");
 const { promisify } = require("util");
 
 const copyToClipboard = promisify(copy);
 
-module.exports = async function(filePath) {
+module.exports = async function(filePath, createTunnel) {
   try {
-    const { localUrl, tunnelUrl } = await startSession(filePath);
+    const { localUrl, tunnelUrl } = await startSession(filePath, createTunnel);
 
-    await copyToClipboard(tunnelUrl);
-
+    const tunnelUrlDisplay = tunnelUrl ? tunnelUrl : magenta("N/A (Disabled)");
     const successMessage = [
-      green("New collaborative sesion started!\n"),
+      green(`New collaborative sesion started! ${emoji.get("rocket")}\n`),
       `${cyan("Local URL:")}  ${localUrl}`,
-      `${cyan("Tunnel URL:")} ${tunnelUrl}\n`,
-      gray("Tunnel URL has been copied to your clipboard")
+      `${cyan("Tunnel URL:")} ${tunnelUrlDisplay}\n`,
+      gray(`${tunnelUrl ? "Tunnel" : "Local"} URL is copied to your clipboard`)
     ].join("\n");
+
+    await copyToClipboard(tunnelUrl || localUrl);
+    opn(localUrl);
 
     console.log(
       boxen(successMessage, {
@@ -26,10 +29,9 @@ module.exports = async function(filePath) {
         padding: 1
       })
     );
-
-    opn(tunnelUrl);
-  } catch ({ message }) {
+  } catch ({ message, stack }) {
     console.error(message);
+    console.error(stack);
     process.exit(1);
   }
 };

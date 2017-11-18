@@ -14,6 +14,12 @@ const parser = usage(
         describe: "The file path to begin collaborating on",
         type: "string"
       })
+      .option("no-tunnel", {
+        describe: "Disable tunnel auto-creation",
+        alias: "n",
+        type: "boolean",
+        default: false
+      })
       .example(
         "kyte",
         "Start a new collaborative session, using a new empty file"
@@ -28,5 +34,5 @@ const parser = usage(
   }
 );
 
-const { filePath } = parser.parse();
-require("../lib/cli")(filePath);
+const { filePath, noTunnel } = parser.parse();
+require("../lib/cli")(filePath, !noTunnel);
