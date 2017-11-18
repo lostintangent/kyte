@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@commitlint/cli": "^5.0.0",
-    "@commitlint/config-angular": "^4.2.1",
+    "@commitlint/config-angular": "^5.0.0",
     "@commitlint/prompt-cli": "^5.0.0",
     "babel-core": "^6.25.0",
     "babel-loader": "^7.1.1",
