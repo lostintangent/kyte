@@ -29,7 +29,8 @@
 
     require(["vs/editor/editor.main"], () => {
       monaco.editor.create(document.getElementById("container"), {
-        theme: "vs-dark" // TODO: Enable changing theme
+        language: "typescript",
+        theme: "vs-dark"
       });
 
       // Now that the editor has been fully initialized,

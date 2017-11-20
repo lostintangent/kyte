@@ -8,12 +8,14 @@ module.exports = (
   let changeDisposable,
     editsInProgress = false;
 
+  let oldContent;
   shareDbDocument.subscribe(() => {
     if (!shareDbDocument.type) {
       shareDbDocument.create({ [contentPath]: "" });
     }
 
     monacoModel.setValue(shareDbDocument.data[contentPath]);
+    oldModel = monacoModel;
 
     // Begin listening for incoming operations from the
     // server so that we can apply them to the local editor.
@@ -24,72 +26,37 @@ module.exports = (
     changeDisposable = monacoModel.onDidChangeContent(contentChangeListener);
   });
 
+  // Scenarios:
+  // ----------
+  // Insert (simply insert, normal auto-closing char, add single line comment, copy line up/down)
+  // Delete (simple delete, normal undo)
+  // Replace (Manual highselect/replace, or find/replace with a single match)
+  // Replace, Replace, ... (Find replace) (NOT WORKING)
+  // Insert, Delete (New line + removing previous smart indent, move line down)
+  // Delete, Insert (Remove previous smart indent + insert newline, move line up)
+  // Insert, Insert (auto-closing characters such as braces or quotes when selecting a symbol, add multi-line block comment)
+  // Insert, Insert, ... (mutlti-cursor insert, format document)
+  // Delete, Delete (undoing an auto-closing character that wraps a symbol, undoing a multi-line block comment)
+  // Delete, Delete, ... (multi-cursor delete)
   function contentChangeListener({ changes }) {
     if (editsInProgress) {
       return;
     }
 
-    // Insert (simply insert, normal auto-closing char)
-    // Delete (simple delete, normal undo)
-    // Replace (Manual highselect/replace, or find/replace with a single match)
-    // Replace, Replace, ... (Find replace) (NOT WORKING)
-    // Insert, Delete (New line + removing previous smart indent)
-    // Delete, Insert (Remove previous smart indent + insert newline)
-    // Insert, Insert (auto-closing characters such as braces or quotes, when selecting a symbol)
-    // Delete, Delete (undoing an auto-closing character that wraps a symbol)
-
-    // TODO: Comment/uncomment block? Multi-cursor? Formatting (tons of inserts)?
-
-    debug("Received local changes: %o", changes);
+    debug("Received changes from editor: %o", changes);
 
     let textCursor = 0;
     const operation = [];
-    changes = changes
-      .map(({ range, rangeLength, text }) => {
-        return {
-          offset: monacoModel.getOffsetAt(range.getStartPosition()),
-          rangeLength,
-          range,
-          text
-        };
-      })
-      .sort((a, b) => {
-        if (a.offset > b.offset) {
-          return 1;
-        } else if (a.offset < b.offset) {
-          return -1;
-        } else {
-          return 0;
-        }
-      });
 
-    if (changes.length === 2) {
-      // Inserting a newline (plus smart indent), when
-      // there is a subsequent line that has uncommitted "smart indentation"
-      if (
-        changes[0].text &&
-        changes[1].rangeLength > 0 &&
-        changes[0].text.startsWith("\n")
-      ) {
-        // Since a new line has been inserted, we need to shift
-        // the second operation down a line
-        changes[1].range.startLineNumber += 1;
-        changes[1].offset = monacoModel.getOffsetAt(
-          changes[1].range.getStartPosition()
-        );
-      }
-    }
-
-    let previousOperationCharacterImpact = 0;
-    changes.forEach(({ offset, rangeLength, text }) => {
+    // Monaco provides the list of changes in descending order (starting from the end of the
+    // document and moving up), but ShareDB operations need to move forward through the doc,
+    // so we simply need to reverse the change list before prcessing them. Array.prototype.reverse
+    // is technically slower the reverse iteration, however, the list of changes is typically only
+    // a couple of items at most, so I'm leaving it since it reads more more intituively.
+    // https://jsperf.com/reverse-foreach-vs-reversal-iteration
+    changes.reverse().forEach(({ range, rangeLength, text }) => {
+      const offset = oldModel.getOffsetAt(range.getStartPosition());
       let adjustedOffset = offset - textCursor;
-
-      // Undoing an auto-closed character (quote, parens, bracket, brace) that was wrapped
-      // around another string/symbol
-      // Also includes find/replace
-      if (rangeLength > 0) {
-        adjustedOffset -= previousOperationCharacterImpact;
-      }
 
       if (adjustedOffset > 0) {
         operation.push(adjustedOffset);
@@ -100,19 +67,26 @@ module.exports = (
         operation.push({
           d: rangeLength
         });
-
-        previousOperationCharacterImpact = rangeLength;
+        textCursor += rangeLength;
       }
 
       if (text) {
         operation.push(text);
-
-        previousOperationCharacterImpact = text.length;
       }
     });
 
-    debug("Submitting document operation: %o", operation);
-    shareDbDocument.submitOp([{ p: [contentPath], t: "text", o: operation }]);
+    debug("Submitting operation to server: %o", operation);
+    shareDbDocument.submitOp([
+      {
+        p: [contentPath],
+        t: "text",
+        o: operation
+      }
+    ]);
+
+    // Snapshot the current document so that the next
+    // editor can use it to determine the correct offsets.
+    oldModel = monaco.editor.createModel(monacoModel.getValue());
   }
 
   const applyRemoteOperation = require("./remoteOperationHandler")(monacoModel);
