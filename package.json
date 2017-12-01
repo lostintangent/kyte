@@ -26,7 +26,7 @@
     "babel-preset-env": "^1.6.1",
     "husky": "^0.14.3",
     "lerna": "^2.4.0",
-    "lint-staged": "^5.0.0",
+    "lint-staged": "^6.0.0",
     "prettier": "^1.7.0",
     "webpack": "^3.8.1"
   }
