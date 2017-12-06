@@ -18,16 +18,14 @@
     "*.js{on,}": ["prettier --write", "git add"]
   },
   "devDependencies": {
-    "@commitlint/cli": "^5.0.0",
-    "@commitlint/config-angular": "^5.0.0",
-    "@commitlint/prompt-cli": "^5.0.0",
-    "babel-core": "^6.25.0",
-    "babel-loader": "^7.1.1",
+    "@commitlint/cli": "^5.2.3",
+    "@commitlint/config-angular": "^5.1.1",
+    "@commitlint/prompt-cli": "^5.2.0",
     "babel-preset-env": "^1.6.1",
     "husky": "^0.14.3",
-    "lerna": "^2.4.0",
+    "lerna": "^2.5.1",
     "lint-staged": "^6.0.0",
-    "prettier": "^1.7.0",
-    "webpack": "^3.8.1"
+    "parcel-bundler": "parcel-bundler/parcel",
+    "prettier": "^1.9.1"
   }
 }

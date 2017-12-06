@@ -7,7 +7,7 @@ const WebSocketJsonStream = require("websocket-json-stream");
 
 module.exports = port => {
   const app = express();
-  app.use(express.static(path.join(__dirname, "assets")));
+  app.use(express.static(path.join(__dirname, "dist")));
 
   const server = http.createServer(app);
   server.listen(port);
