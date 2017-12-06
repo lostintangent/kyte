@@ -7,7 +7,7 @@
   "bin": {
     "kyte": "bin/index.js"
   },
-  "files": ["bin/", "lib/", "server/index.js", "server/assets/"],
+  "files": ["bin/", "lib/", "server/index.js", "server/dist/"],
   "scripts": {
     "build":
       "parcel build server/client/index.html -d server/dist --public-url '/' --no-minify",
