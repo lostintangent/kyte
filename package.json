@@ -9,7 +9,7 @@
     "format": "prettier --write '**/*.js{on,}'",
     "precommit": "lint-staged",
     "release":
-      "npm run build && lerna publish -m 'chore(release): Publishing release(s)'"
+      "npm run build && lerna publish -m 'build(release): Publishing release(s)'"
   },
   "commitlint": {
     "extends": ["@commitlint/config-angular"]
