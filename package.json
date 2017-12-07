@@ -15,9 +15,8 @@
   "commitlint": {
     "extends": ["@commitlint/config-angular"]
   },
-  "eslintIgnore": ["**/node_modules/**", "**/dist/**"],
   "lint-staged": {
-    "*.js": ["eslint packages"],
+    "*.js": ["eslint packages --fix", "git add"],
     "*.{css,js,json,md}": ["prettier --write", "git add"]
   },
   "devDependencies": {

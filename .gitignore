@@ -2,5 +2,5 @@ dist
 lerna-debug.log
 node_modules
 yarn-error.log
-.DS_Store
 .cache
+.DS_Store
