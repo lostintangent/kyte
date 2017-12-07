@@ -1,7 +1,7 @@
 const boxen = require("boxen");
 const emoji = require("node-emoji");
 const opn = require("opn");
-const startSession = require("./startSession");
+const startSession = require("./start-session");
 const { copy } = require("copy-paste");
 const { cyan, gray, green, magenta, red } = require("chalk");
 const { promisify } = require("util");

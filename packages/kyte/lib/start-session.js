@@ -20,7 +20,7 @@ async function populateFileContents(serverUrl, filePath) {
   const socket = new WebSocket(serverUrl);
 
   const fileContents = fs.readFileSync(filePath, "utf8");
-  await require("./shareClient")(socket, fileContents);
+  await require("./share-client")(socket, fileContents);
 
   socket.close();
 }

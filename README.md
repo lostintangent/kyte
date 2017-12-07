@@ -4,7 +4,7 @@
 [![Greenkeeper badge](https://badges.greenkeeper.io/lostintangent/kyte.svg)](https://greenkeeper.io/)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 [![Maintainability](https://api.codeclimate.com/v1/badges/84be0e61815a8fbd3aef/maintainability)](https://codeclimate.com/github/lostintangent/kyte/maintainability)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b7c97aa5ef87430ca1eb48c7399c41d3)](https://www.codacy.com/app/lostintangent/kyte?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=lostintangent/kyte&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b7c97aa5ef87430ca1eb48c7399c41d3)](https://www.codacy.com/app/lostintangent/kyte?utm_source=github.com&utm_medium=referral&utm_content=lostintangent/kyte&utm_campaign=Badge_Grade)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
 Kyte is a single-command Node.js CLI that allows easily sharing a local file with other developers, and then collaboratively editing it in real-time, directly from your browser (Google Docs style!).
@@ -17,20 +17,20 @@ Kyte is a single-command Node.js CLI that allows easily sharing a local file wit
 
 1. Install the `Kyte` CLI on your development machine, using your preferred NPM client
 
-    ```shell
-    npm install -g kyte
-    yarn global add kyte
-    ```
+   ```shell
+   npm install -g kyte
+   yarn global add kyte
+   ```
 
 2. CD into the directory that contains the file you'd like to share
 
 3. Start sharing it with `Kyte`, which will launch a new browser-based editor, containing the contents of the specified file
 
-    ```shell
-    kyte <filePath>
-    ```
+   ```shell
+   kyte <filePath>
+   ```
 
-    > Note: You can omit the `filePath` argument in order to start a collaborative editing session on an empty file.
+   > Note: You can omit the `filePath` argument in order to start a collaborative editing session on an empty file.
 
 4. Send the share URL (that has been copied to your clipboard) to all of the developers that you'd like to collaborate with, and then begin editing the file in real-time!
 

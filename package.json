@@ -6,7 +6,7 @@
     "clean": "lerna clean",
     "commitmsg": "commitlint -e $GIT_PARAMS",
     "cz": "commit",
-    "format": "prettier --write '**/*.js{on,}'",
+    "format": "prettier --write '**/*.{css,js,json,md}'",
     "lint": "eslint packages",
     "precommit": "lint-staged",
     "release":
@@ -18,7 +18,7 @@
   "eslintIgnore": ["**/node_modules/**", "**/dist/**"],
   "lint-staged": {
     "*.js": ["eslint packages"],
-    "*.js{on,}": ["prettier --write", "git add"]
+    "*.{css,js,json,md}": ["prettier --write", "git add"]
   },
   "devDependencies": {
     "@commitlint/cli": "^5.2.3",
@@ -30,7 +30,7 @@
     "husky": "^0.14.3",
     "lerna": "^2.5.1",
     "lint-staged": "^6.0.0",
-    "parcel-bundler": "parcel-bundler/parcel",
+    "parcel-bundler": "^1.0.3",
     "prettier": "^1.9.1"
   }
 }

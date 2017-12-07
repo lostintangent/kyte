@@ -26,18 +26,6 @@ module.exports = (
     changeDisposable = monacoModel.onDidChangeContent(contentChangeListener);
   });
 
-  // Scenarios:
-  // ----------
-  // Insert (simply insert, normal auto-closing char, add single line comment, copy line up/down)
-  // Delete (simple delete, normal undo)
-  // Replace (Manual highselect/replace, or find/replace with a single match)
-  // Replace, Replace, ... (Find replace) (NOT WORKING)
-  // Insert, Delete (New line + removing previous smart indent, move line down)
-  // Delete, Insert (Remove previous smart indent + insert newline, move line up)
-  // Insert, Insert (auto-closing characters such as braces or quotes when selecting a symbol, add multi-line block comment)
-  // Insert, Insert, ... (mutlti-cursor insert, format document)
-  // Delete, Delete (undoing an auto-closing character that wraps a symbol, undoing a multi-line block comment)
-  // Delete, Delete, ... (multi-cursor delete)
   function contentChangeListener({ changes }) {
     if (editsInProgress) {
       return;
@@ -96,26 +84,13 @@ module.exports = (
     }
 
     editsInProgress = true;
-
     operations.forEach(applyRemoteOperation);
-    validateLocalState();
-
     editsInProgress = false;
   }
 
-  function validateLocalState() {
-    const localText = monacoModel.getValue();
-    const remoteText = shareDbDocument.data[contentPath];
-
-    if (localText !== remoteText) {
-      debug("Local state out of sync, resetting to server snapshot");
-      monacoModel.setValue(remoteText);
-    }
-  }
-
   return () => {
-    // Stop listening to input from the server, as well
-    // as changes coming from the provided editor model.
+    oldModel = null;
+
     changeDisposable && changeDisposable.dispose();
     shareDbDocument.removeListener("op", serverOperationListener);
   };
