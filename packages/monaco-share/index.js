@@ -8,7 +8,7 @@ module.exports = (
   let changeDisposable,
     editsInProgress = false;
 
-  let oldContent;
+  let oldModel;
   shareDbDocument.subscribe(() => {
     if (!shareDbDocument.type) {
       shareDbDocument.create({ [contentPath]: "" });
@@ -86,7 +86,7 @@ module.exports = (
 
     // Snapshot the current document so that the next
     // editor can use it to determine the correct offsets.
-    oldModel = monaco.editor.createModel(monacoModel.getValue());
+    oldModel = window.monaco.editor.createModel(monacoModel.getValue());
   }
 
   const applyRemoteOperation = require("./remoteOperationHandler")(monacoModel);

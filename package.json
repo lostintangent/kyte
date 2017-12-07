@@ -7,6 +7,7 @@
     "commitmsg": "commitlint -e $GIT_PARAMS",
     "cz": "commit",
     "format": "prettier --write '**/*.js{on,}'",
+    "lint": "eslint packages",
     "precommit": "lint-staged",
     "release":
       "npm run build && lerna publish -m 'build(release): publishing updates'"
@@ -14,7 +15,9 @@
   "commitlint": {
     "extends": ["@commitlint/config-angular"]
   },
+  "eslintIgnore": ["**/node_modules/**", "**/dist/**"],
   "lint-staged": {
+    "*.js": ["eslint packages"],
     "*.js{on,}": ["prettier --write", "git add"]
   },
   "devDependencies": {
@@ -22,6 +25,8 @@
     "@commitlint/config-angular": "^5.1.1",
     "@commitlint/prompt-cli": "^5.2.0",
     "babel-preset-env": "^1.6.1",
+    "eslint": "^4.12.1",
+    "eslint-config-prettier": "^2.9.0",
     "husky": "^0.14.3",
     "lerna": "^2.5.1",
     "lint-staged": "^6.0.0",

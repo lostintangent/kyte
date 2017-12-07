@@ -30,8 +30,7 @@ module.exports = async function(filePath, createTunnel) {
       })
     );
   } catch ({ message, stack }) {
-    console.error(message);
-    console.error(stack);
+    console.error(red(message));
     process.exit(1);
   }
 };

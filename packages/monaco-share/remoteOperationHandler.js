@@ -5,7 +5,7 @@ function applyRemoteDelete(model, startOffset, endOffset) {
   const endPosition = model.getPositionAt(endOffset);
   model.applyEdits([
     {
-      range: new monaco.Range(
+      range: new window.monaco.Range(
         startPosition.lineNumber,
         startPosition.column,
         endPosition.lineNumber,
@@ -19,7 +19,7 @@ function applyRemoteInsert(model, text, offset) {
   const { column, lineNumber } = model.getPositionAt(offset);
   model.applyEdits([
     {
-      range: new monaco.Range(lineNumber, column, lineNumber, column),
+      range: new window.monaco.Range(lineNumber, column, lineNumber, column),
       text
     }
   ]);

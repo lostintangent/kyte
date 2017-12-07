@@ -1,7 +1,7 @@
 // This will be translated by "babel-present-env"
 // into the set of imports needed to polyfill the
 // target browsers specified in the .babelrc file
-import "@babel/polyfill";
+require("@babel/polyfill");
 
 // Both Parcel and Monaco introdce a require function,
 // so we need to capture the Monaco one in order to

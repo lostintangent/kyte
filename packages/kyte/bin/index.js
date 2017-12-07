@@ -1,7 +1,8 @@
 #! /usr/bin/env node
 
 if (!process.version.startsWith("v8")) {
-  exit("The Kyte CLI requires Node v8.0.0 or greater in order to run");
+  console.error("The Kyte CLI requires Node v8.0.0 or greater in order to run");
+  process.exit(1);
 }
 
 const { usage } = require("yargs");
