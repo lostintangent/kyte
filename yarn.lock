@@ -4122,9 +4122,9 @@ pako@~0.2.0:
   version "0.2.9"
   resolved "https://registry.yarnpkg.com/pako/-/pako-0.2.9.tgz#f3f7522f4ef782348da8161bad9ecfd51bf83a75"
 
-parcel-bundler@parcel-bundler/parcel:
-  version "1.0.2"
-  resolved "https://codeload.github.com/parcel-bundler/parcel/tar.gz/b25af339c38c15cb145149c22c8c064d7baefdb9"
+parcel-bundler@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/parcel-bundler/-/parcel-bundler-1.0.3.tgz#5d18ff963a9b892fc910bd0bac829217d34c9459"
   dependencies:
     babel-core "^6.25.0"
     babel-generator "^6.25.0"
