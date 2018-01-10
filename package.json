@@ -20,7 +20,7 @@
     "*.{css,js,json,md}": ["prettier --write", "git add"]
   },
   "devDependencies": {
-    "@commitlint/cli": "^5.2.6",
+    "@commitlint/cli": "^6.0.0",
     "@commitlint/config-angular": "^5.1.1",
     "@commitlint/prompt-cli": "^5.2.6",
     "babel-preset-env": "^1.6.1",
