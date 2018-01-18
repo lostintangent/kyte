@@ -49,7 +49,7 @@
     resolve-global "^0.1.0"
     semver "^5.3.0"
 
-"@commitlint/core@^6.0.0":
+"@commitlint/core@^6.0.1":
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/@commitlint/core/-/core-6.0.1.tgz#bad9735076ccdfa319b47acba977a3f3aa58eb29"
   dependencies:
@@ -103,22 +103,27 @@
     conventional-changelog-angular "^1.3.3"
     conventional-commits-parser "^2.1.0"
 
-"@commitlint/prompt-cli@^5.2.6":
-  version "5.2.6"
-  resolved "https://registry.yarnpkg.com/@commitlint/prompt-cli/-/prompt-cli-5.2.6.tgz#5fb73d83428fd559c78b476e85bccb54f831c346"
+"@commitlint/prompt-cli@6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@commitlint/prompt-cli/-/prompt-cli-6.0.0.tgz#f908549a88bca66f58ea3b274771708c8c8714c1"
   dependencies:
-    "@commitlint/prompt" "^5.2.6"
+    "@commitlint/prompt" "^6.0.0"
     execa "0.8.0"
     meow "3.7.0"
 
-"@commitlint/prompt@^5.2.6":
-  version "5.2.6"
-  resolved "https://registry.yarnpkg.com/@commitlint/prompt/-/prompt-5.2.6.tgz#d9fab929bae6e9a85310680683adfffbb16509c3"
+"@commitlint/prompt@^6.0.0":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/@commitlint/prompt/-/prompt-6.0.1.tgz#a164f6ea9688eb45bed5191610aa7df2e4d4788d"
   dependencies:
-    "@commitlint/core" "^5.2.6"
+    "@commitlint/core" "^6.0.1"
     babel-runtime "^6.23.0"
     chalk "^2.0.0"
-    lodash "^4.17.4"
+    lodash.camelcase "4.3.0"
+    lodash.kebabcase "4.1.1"
+    lodash.snakecase "4.1.1"
+    lodash.startcase "4.4.0"
+    lodash.topairs "4.3.0"
+    lodash.upperfirst "4.3.1"
     throat "^4.1.0"
     vorpal "^1.10.0"
 
@@ -3643,6 +3648,10 @@ lodash.uniq@^4.5.0:
 lodash.upperfirst@4.3.1:
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/lodash.upperfirst/-/lodash.upperfirst-4.3.1.tgz#1365edf431480481ef0d1c68957a5ed99d49f7ce"
+
+lodash@4.17.4, lodash@^4.0.0, lodash@^4.1.0, lodash@^4.14.0, lodash@^4.17.4, lodash@^4.2.1, lodash@^4.3.0, lodash@^4.5.1:
+  version "4.17.4"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
 
 lodash@^3.3.1:
   version "3.10.1"
