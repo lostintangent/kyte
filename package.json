@@ -24,12 +24,12 @@
     "@commitlint/config-angular": "^6.0.2",
     "@commitlint/prompt-cli": "^6.0.2",
     "babel-preset-env": "^1.6.1",
-    "eslint": "^4.13.1",
+    "eslint": "^4.15.0",
     "eslint-config-prettier": "^2.9.0",
     "husky": "^0.14.3",
-    "lerna": "^2.5.1",
+    "lerna": "^2.7.1",
     "lint-staged": "^6.0.0",
-    "parcel-bundler": "^1.3.0",
-    "prettier": "^1.9.2"
+    "parcel-bundler": "^1.4.1",
+    "prettier": "^1.10.2"
   }
 }
