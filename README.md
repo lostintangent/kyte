@@ -22,9 +22,9 @@ Kyte is a single-command Node.js CLI that allows easily sharing a local file wit
    yarn global add kyte
    ```
 
-2. CD into the directory that contains the file you'd like to share
+1. CD into the directory that contains the file you'd like to share
 
-3. Start sharing it with `Kyte`, which will launch a new browser-based editor, containing the contents of the specified file
+1. Start sharing it with `Kyte`, which will launch a new browser-based editor, containing the contents of the specified file
 
    ```shell
    kyte <filePath>
@@ -32,7 +32,7 @@ Kyte is a single-command Node.js CLI that allows easily sharing a local file wit
 
    > Note: You can omit the `filePath` argument in order to start a collaborative editing session on an empty file.
 
-4. Send the share URL (that has been copied to your clipboard) to all of the developers that you'd like to collaborate with, and then begin editing the file in real-time!
+1. Send the share URL (that has been copied to your clipboard) to all of the developers that you'd like to collaborate with, and then begin editing the file in real-time!
 
 As an alternative, if you'd prefer not to install the `kyte` CLI globally, you could use `npx` to share your file with a single command:
 
