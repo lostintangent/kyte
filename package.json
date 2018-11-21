@@ -26,7 +26,7 @@
     "babel-preset-env": "^1.6.1",
     "eslint": "^4.15.0",
     "eslint-config-prettier": "^2.9.0",
-    "husky": "^0.14.3",
+    "husky": "^1.2.0",
     "lerna": "^2.7.1",
     "lint-staged": "^7.0.0",
     "parcel-bundler": "^1.4.1",
