@@ -22,7 +22,7 @@
   "devDependencies": {
     "@commitlint/cli": "^8.1.0",
     "@commitlint/config-angular": "^8.1.0",
-    "@commitlint/prompt-cli": "^6.0.2",
+    "@commitlint/prompt-cli": "^8.1.0",
     "babel-preset-env": "^1.6.1",
     "eslint": "^4.15.0",
     "eslint-config-prettier": "^2.9.0",
