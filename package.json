@@ -24,7 +24,7 @@
     "@commitlint/config-angular": "^6.0.2",
     "@commitlint/prompt-cli": "^6.0.2",
     "babel-preset-env": "^1.6.1",
-    "eslint": "^4.15.0",
+    "eslint": "^6.2.0",
     "eslint-config-prettier": "^2.9.0",
     "husky": "^0.14.3",
     "lerna": "^2.7.1",
